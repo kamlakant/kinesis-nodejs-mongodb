@@ -1,0 +1,23 @@
+{
+  "name": "kinesis-nodejs-mongodb-demo",
+  "version": "1.0.0",
+  "description": "Kinesis NodeJS MongoDB Demo",
+  "main": "index.js",
+  "author": "Kamlakant Shukla",
+  "license": "ISC",
+  "scripts": {
+    "start-api": "node api/index.js",
+    "start-producer": "node producer/producer.js",
+    "start-consumer": "./node_modules/aws-kcl/bin/kcl-bootstrap -e -p ./consumer/consumer.properties"
+  },
+  "dependencies": {
+    "aws-kcl": "^0.7.0",
+    "aws-sdk": "^2.315.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "log4js": "^3.0.5",
+    "mongoose": "^5.2.14",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
