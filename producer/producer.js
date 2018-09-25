@@ -2,7 +2,7 @@
 
 const AWS = require('aws-sdk');
 const recordGenerator = require('./record-generator')();
-const awsConfig = require('../config/aws.config');
+const kinesisConfig = require('../config/kinesis.config');
 const logger = require('../util/logger')('producer');
 
 const awsCredentials = new AWS.SharedIniFileCredentials({
@@ -10,14 +10,14 @@ const awsCredentials = new AWS.SharedIniFileCredentials({
 });
 
 AWS.config.update({
-    region: awsConfig.region,
+    region: kinesisConfig.region,
     credentials: awsCredentials
 });
 
 const kinesis = new AWS.Kinesis();
 
 const produce = () => {
-    sendToKinesis(awsConfig.recordsPerBatch).then(() => {
+    sendToKinesis(kinesisConfig.recordsPerBatch).then(() => {
         logger.info('Sent to Kinesis successfully');
     }).catch((err) => {
         logger.error('Failure in sending to kinesis: ', err);
@@ -40,11 +40,11 @@ const sendToKinesis = (totalRecords) => {
     logger.info('Batch of records to written to Kinesis: ', records);
     const recordsParams = {
         Records: records,
-        StreamName: awsConfig.streamName,
+        StreamName: kinesisConfig.streamName,
     }
     return kinesis.putRecords(recordsParams).promise();
 }
 
 setInterval(() => {
     produce();
-}, awsConfig.waitBetweenPutRecords);
+}, kinesisConfig.waitBetweenPutRecords);
